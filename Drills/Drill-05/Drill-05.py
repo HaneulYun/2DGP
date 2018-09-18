@@ -13,13 +13,16 @@ def draw(x, y):
     character.draw(x, y)
     update_canvas()
     delay(0.01)
-    pass
 
 def move(x1, y1, x2, y2):
     pass
 
 def idle():
-    pass
+    x1, y1 = 203, 535;
+    for x2, y2 in ((132, 243), (535, 470), (477, 203), (715, 136), (316, 225),
+                 (510, 92), (692, 518), (682, 336), (712, 349), (203, 535)):
+        move(x1, y1, x2, y2)
+        x1, y1 = x2, y2
 
 while True:
     idle()
