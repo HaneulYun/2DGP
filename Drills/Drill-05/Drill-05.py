@@ -41,7 +41,6 @@ def move_down():
         character.draw_now(x, y)
         y -= 2
         delay(0.01)
-    pass
 
 def move_from_left_to_center():
     x, y = 25, 90
@@ -51,7 +50,6 @@ def move_from_left_to_center():
         character.draw_now(x, y)
         x += 2
         delay(0.01)
-    pass
 
 def make_rectangle():
     move_from_center_to_right()
@@ -61,7 +59,14 @@ def make_rectangle():
     move_from_left_to_center()
 
 def make_circle():
-    pass
+    cx, cy, r = 800 // 2, 600 // 2, (600-180) // 2
+    degree = -90
+    while degree < 270:
+        clear_canvas_now()
+        grass.draw_now(400, 30)
+        character.draw_now(cx, cy)
+        degree -= 2
+        delay(0.01)
 
 while True:
     make_rectangle();
