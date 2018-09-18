@@ -1,4 +1,6 @@
 from pico2d import *
+import math
+
 
 open_canvas()
 
@@ -7,15 +9,19 @@ character = load_image('character.png')
 
  # fill here
 
-def draw(x, y):
+def draw(radian, x, y):
     clear_canvas()
     grass.draw(400, 30)
-    character.draw(x, y)
+    character.rotate_draw(radian, x, y)
     update_canvas()
     delay(0.01)
 
 def move(x1, y1, x2, y2):
-    pass
+    radian = math.atan2(y2 - y1, x2 - x1)
+    distance = math.sqrt((x2 - x1)**2 + (y2-y1)**2)
+    while distance > 0:
+        draw(radian, x2 - math.cos(radian) * distance, y2 - math.sin(radian) * distance)
+        distance -= 1
 
 def idle():
     x1, y1 = 203, 535;
@@ -28,4 +34,3 @@ while True:
     idle()
 
 close_canvas()
-
