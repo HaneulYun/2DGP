@@ -9,7 +9,19 @@ character = load_image('animation_sheet.png')
 cursor = load_image('hand_arrow.png')
 
 def handle_events():
-    pass
+    global mouseX, mouseY
+    global moving
+    global running
+    events = get_events()
+    for event in events:
+        if event.type == SDL_QUIT:
+            running = False
+        elif event.type == SDL_MOUSEMOTION:
+            mouseX, mouseY = event.x, KPU_HEIGHT - 1 - event.y
+        elif event.type == SDL_MOUSEBUTTONDOWN and event.button == SDL_BUTTON_LEFT:
+            moving = True
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
+            running = False
 
 def draw(x, y):
     global frame
@@ -23,6 +35,7 @@ def move():
     pass
 
 running = True
+moving = False
 x, y = KPU_WIDTH // 2, KPU_HEIGHT // 2
 mouseX, mouseY = x, y
 frame = 0
