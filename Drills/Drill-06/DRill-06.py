@@ -11,7 +11,7 @@ def handle_event():
     global x, y
     events = get_events()
     for event in events:
-        if event.type == SDL_QUIT or (event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE)
+        if event.type == SDL_QUIT or (event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE):
             running = False
         elif event.type == SDL_MOUSEMOTION:
             x, y = event.x, KPU_HEIGHT - 1 - event.y
@@ -31,8 +31,11 @@ def move(x1, y1, x2, y2):
 def input():
     pass
 
+running = True
+x, y = KPU_WIDTH // 2, KPU_HEIGHT // 2
+frame = 0
 
-while True:
+while running:
     draw(0, KPU_WIDTH // 2, KPU_HEIGHT // 2)
 
 close_canvas()
