@@ -20,9 +20,6 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             running = False
 
-    pass
-
-
 while x < 800 and running:
     clear_canvas()
     grass.draw(400, 30)
