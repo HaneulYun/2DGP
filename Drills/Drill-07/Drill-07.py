@@ -37,7 +37,7 @@ def draw(x, y):
     kpu_ground.draw(KPU_WIDTH // 2, KPU_HEIGHT // 2)
     character.clip_draw(frame * 100, 100 * action, 100, 100, x, y)
     frame = (frame + 1) % 8
-    cursor.draw(mouseX + cursor.w // 2, mouseY - cursor.h // 2)
+    #cursor.draw(mouseX + cursor.w // 2, mouseY - cursor.h // 2)
     update_canvas()
 
 def move():
@@ -64,10 +64,21 @@ hide_cursor()
 import random
 
 size = 20
-points = [(random.randint(-500, 500), random.randint(-350, 350)) for i in range(size)]
+points = [(random.randint(0, 1280), random.randint(0, 1024)) for i in range(size)]
 n = 1
 
 while running:
+    if(moving == False):
+        mouseX, mouseY = points[n][0], points[n][1]
+        moving = True
+        distance = math.sqrt((mouseX - x) ** 2 + (mouseY - y) ** 2)
+        targetX, targetY = mouseX, mouseY
+        if targetX > x:
+            direction = True
+        else:
+            direction = False
+        #draw_line(points[n - 1], points[n])
+        n = (n + 1) % size
     handle_events()
     move()
     delay(1/60)
