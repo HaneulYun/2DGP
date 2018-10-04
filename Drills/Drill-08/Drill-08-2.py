@@ -24,31 +24,33 @@ def handle_events():
 def draw(x, y):
     global frame, points, moveNum
     action = (1-moving) * 2
-    if(points[moveNum][0] >= x):
+    if(points[moveNum-1][0] >= x):
         action += direction
     kpu_ground.draw(KPU_WIDTH // 2, KPU_HEIGHT // 2)
     character.clip_draw(frame * 100, 100 * action, 100, 100, x, y)
     frame = (frame + 1) % 8
-    #cursor.draw(mouseX + cursor.w // 2, mouseY - cursor.h // 2)
+    cursor.draw(mouseX + cursor.w // 2, mouseY - cursor.h // 2)
     update_canvas()
 
-def set_curve_4_points(p1, p2, p3, p4, ratio):
-    global x, y
-    t = ratio / 100
+def set_curve_4_points(p1, p2, p3, p4):
+    global x, y, moveRatio, moveNum
+    t = moveRatio / 100
     x = ((-t ** 3 + 2 * t ** 2 - t) * p1[0] + (3 * t ** 3 - 5 * t ** 2 + 2) * p2[0] + (
                         -3 * t ** 3 + 4 * t ** 2 + t) * p3[0] + (t ** 3 - t ** 2) * p4[0]) / 2
     y = ((-t ** 3 + 2 * t ** 2 - t) * p1[1] + (3 * t ** 3 - 5 * t ** 2 + 2) * p2[1] + (
                         -3 * t ** 3 + 4 * t ** 2 + t) * p3[1] + (t ** 3 - t ** 2) * p4[1]) / 2
+    moveRatio += 1
+    if moveRatio > 100:
+        moveRatio = 0
+        moveNum = (moveNum+1) % 10
 
 def move():
-    global x, y, t, moving
+    global x, y, moving, points, moveNum, moveRatio
     if moving:
-        set_curve_4_points()
-        if t > 100:
-            moving = False
+        set_curve_4_points(points[moveNum-3], points[moveNum-2], points[moveNum-1], points[moveNum])
 
 running = True
-moving = False
+moving = True
 direction = True
 frame = 0
 hide_cursor()
