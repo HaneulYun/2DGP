@@ -24,11 +24,14 @@ def handle_events():
 frame_gap = 0
 
 def draw(x, y):
-    global frame, points, moveNum, frame_gap
+    global frame, points, moveNum, frame_gap, check, points
     action = (1-moving) * 2
     if(points[moveNum-1][0] >= x):
         action += direction
     kpu_ground.draw(KPU_WIDTH // 2, KPU_HEIGHT // 2)
+    for checking in range(10):
+        if check[checking]:
+            character.clip_draw(0, 100 * 0, 100, 100, points[checking-1][0], points[checking-1][1])
     character.clip_draw(frame * 100, 100 * action, 100, 100, x, y)
     frame_gap = (frame_gap + 1) % 3
     if frame_gap == 0:
@@ -37,7 +40,7 @@ def draw(x, y):
     update_canvas()
 
 def set_curve_4_points(p1, p2, p3, p4):
-    global x, y, moveRatio, moveNum
+    global x, y, moveRatio, moveNum, check
     t = moveRatio / 150
     x = ((-t ** 3 + 2 * t ** 2 - t) * p1[0] + (3 * t ** 3 - 5 * t ** 2 + 2) * p2[0] + (
                         -3 * t ** 3 + 4 * t ** 2 + t) * p3[0] + (t ** 3 - t ** 2) * p4[0]) / 2
@@ -46,6 +49,7 @@ def set_curve_4_points(p1, p2, p3, p4):
     moveRatio += 1
     if moveRatio > 150:
         moveRatio = 0
+        check[moveNum] = True
         moveNum = (moveNum+1) % 10
 
 def move():
@@ -67,6 +71,7 @@ mouseX, mouseY = x, y
 size = 10
 userPosition = [KPU_WIDTH // 2, KPU_HEIGHT // 2]
 points = [(random.randint(0, 1280), random.randint(0, 1024)) for i in range(size)]
+check = [False for i in range (size)]
 moveRatio = 0
 moveNum = 1
 
