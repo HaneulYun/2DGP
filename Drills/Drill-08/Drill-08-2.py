@@ -9,7 +9,7 @@ character = load_image('animation_sheet.png')
 cursor = load_image('hand_arrow.png')
 
 def handle_events():
-    global mouseX, mouseY, targetX, targetY, x, y
+    global mouseX, mouseY, x, y
     global distance, direction
     global running, moving
     events = get_events()
@@ -18,21 +18,13 @@ def handle_events():
             running = False
         elif event.type == SDL_MOUSEMOTION:
             mouseX, mouseY = event.x, KPU_HEIGHT - 1 - event.y
-        elif event.type == SDL_MOUSEBUTTONDOWN and event.button == SDL_BUTTON_LEFT:
-            moving = True
-            distance = math.sqrt((mouseX - x)**2 + (mouseY-y)**2)
-            targetX, targetY = mouseX, mouseY
-            if targetX > x:
-                direction = True
-            else:
-                direction = False
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             running = False
 
 def draw(x, y):
-    global frame
+    global frame, points, moveNum
     action = (1-moving) * 2
-    if(targetX >= x):
+    if(points[moveNum][0] >= x):
         action += direction
     kpu_ground.draw(KPU_WIDTH // 2, KPU_HEIGHT // 2)
     character.clip_draw(frame * 100, 100 * action, 100, 100, x, y)
@@ -58,14 +50,13 @@ def move():
 running = True
 moving = False
 direction = True
-distance = 0.0
-x, y = KPU_WIDTH // 2, KPU_HEIGHT // 2
-mouseX, mouseY = x, y
-targetX, targetY = x, y
 frame = 0
 hide_cursor()
 
 import random
+
+x, y = KPU_WIDTH // 2, KPU_HEIGHT // 2
+mouseX, mouseY = x, y
 
 size = 10
 userPosition = [KPU_WIDTH // 2, KPU_HEIGHT // 2]
