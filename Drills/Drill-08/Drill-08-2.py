@@ -40,14 +40,6 @@ def draw(x, y):
     #cursor.draw(mouseX + cursor.w // 2, mouseY - cursor.h // 2)
     update_canvas()
 
-def move():
-    global x, y, distance, moving
-    if moving:
-        if distance < 6:
-            x, y = targetX, targetY
-            moving = False
-    draw(x, y)
-
 def set_curve_4_points(p1, p2, p3, p4, ratio):
     global x, y
     t = ratio / 100
@@ -55,6 +47,13 @@ def set_curve_4_points(p1, p2, p3, p4, ratio):
                         -3 * t ** 3 + 4 * t ** 2 + t) * p3[0] + (t ** 3 - t ** 2) * p4[0]) / 2
     y = ((-t ** 3 + 2 * t ** 2 - t) * p1[1] + (3 * t ** 3 - 5 * t ** 2 + 2) * p2[1] + (
                         -3 * t ** 3 + 4 * t ** 2 + t) * p3[1] + (t ** 3 - t ** 2) * p4[1]) / 2
+
+def move():
+    global x, y, t, moving
+    if moving:
+        set_curve_4_points()
+        if t > 100:
+            moving = False
 
 running = True
 moving = False
@@ -65,29 +64,19 @@ mouseX, mouseY = x, y
 targetX, targetY = x, y
 frame = 0
 hide_cursor()
-t = 0
 
 import random
 
 size = 10
 userPosition = [KPU_WIDTH // 2, KPU_HEIGHT // 2]
 points = [(random.randint(0, 1280), random.randint(0, 1024)) for i in range(size)]
-n = 1
+moveRatio = 0
+moveNum = 1
 
 while running:
-    if(moving == False):
-        mouseX, mouseY = points[n][0], points[n][1]
-        moving = True
-        distance = math.sqrt((mouseX - x) ** 2 + (mouseY - y) ** 2)
-        targetX, targetY = mouseX, mouseY
-        if targetX > x:
-            direction = True
-        else:
-            direction = False
-        #draw_line(points[n - 1], points[n])
-        n = (n + 1) % size
     handle_events()
     move()
+    draw(x, y)
     delay(1/60)
 
 close_canvas()
