@@ -63,7 +63,7 @@ hide_cursor()
 
 import random
 
-size = 20
+size = 10
 userPosition = [KPU_WIDTH // 2, KPU_HEIGHT // 2]
 points = [(random.randint(0, 1280), random.randint(0, 1024)) for i in range(size)]
 n = 1
