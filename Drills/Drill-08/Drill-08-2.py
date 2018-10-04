@@ -21,26 +21,30 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             running = False
 
+frame_gap = 0
+
 def draw(x, y):
-    global frame, points, moveNum
+    global frame, points, moveNum, frame_gap
     action = (1-moving) * 2
     if(points[moveNum-1][0] >= x):
         action += direction
     kpu_ground.draw(KPU_WIDTH // 2, KPU_HEIGHT // 2)
     character.clip_draw(frame * 100, 100 * action, 100, 100, x, y)
-    frame = (frame + 1) % 8
+    frame_gap = (frame_gap + 1) % 3
+    if frame_gap == 0:
+        frame = (frame + 1) % 8
     cursor.draw(mouseX + cursor.w // 2, mouseY - cursor.h // 2)
     update_canvas()
 
 def set_curve_4_points(p1, p2, p3, p4):
     global x, y, moveRatio, moveNum
-    t = moveRatio / 100
+    t = moveRatio / 150
     x = ((-t ** 3 + 2 * t ** 2 - t) * p1[0] + (3 * t ** 3 - 5 * t ** 2 + 2) * p2[0] + (
                         -3 * t ** 3 + 4 * t ** 2 + t) * p3[0] + (t ** 3 - t ** 2) * p4[0]) / 2
     y = ((-t ** 3 + 2 * t ** 2 - t) * p1[1] + (3 * t ** 3 - 5 * t ** 2 + 2) * p2[1] + (
                         -3 * t ** 3 + 4 * t ** 2 + t) * p3[1] + (t ** 3 - t ** 2) * p4[1]) / 2
     moveRatio += 1
-    if moveRatio > 100:
+    if moveRatio > 150:
         moveRatio = 0
         moveNum = (moveNum+1) % 10
 
