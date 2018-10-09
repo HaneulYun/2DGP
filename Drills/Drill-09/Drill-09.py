@@ -19,7 +19,7 @@ class Boy:
     def draw(self):
         self.image.clip_draw(self.frame * 100, 0, 100, 100, self.x, self.y)
 
-class Ball
+class Ball:
     def __init__(self):
         pass
     def update(self):
@@ -40,6 +40,7 @@ def handle_events():
 open_canvas()
 
 team = [Boy() for i in range(11)]
+balls = [Ball() for i in range(20)]
 grass = Grass()
 running = True
 
@@ -49,11 +50,15 @@ while(running):
 
     for boy in team:
         boy.update()
+    for ball in balls:
+        ball.update()
 
     clear_canvas()
     grass.draw()
     for boy in team:
         boy.draw()
+    for ball in balls:
+        ball.draw()
     update_canvas()
 
     delay(0.05)
