@@ -6,10 +6,12 @@ import main_state
 
 name = "PauseState"
 image = None
+time = None
 
 def enter():
-    global image
+    global image, time
     image = load_image('pause.png')
+    time = 0
 
 def exit():
     global image
@@ -25,9 +27,14 @@ def handle_events():
                 game_framework.pop_state()
 
 def draw():
+    global time
     clear_canvas()
     main_state.draw()
-    image.draw(400, 300, 400, 400)
+    time = (time + 1) % 300
+    if time < 150:
+        image.draw(400, 300, 400, 400)
+    elif time > 300:
+        time = 0
     update_canvas()
 
 def update():
