@@ -2,7 +2,7 @@ import random
 import json
 import os
 
-import pause_state
+import pause_state_advanced
 
 from pico2d import *
 
@@ -64,7 +64,6 @@ def pause():
 def resume():
     pass
 
-
 def handle_events():
     events = get_events()
     for event in  events:
@@ -73,7 +72,7 @@ def handle_events():
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
             game_framework.change_state(title_state)
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_p):
-            game_framework.push_state(pause_state)
+            game_framework.push_state(pause_state_advanced)
 
 def update():
     boy.update()
