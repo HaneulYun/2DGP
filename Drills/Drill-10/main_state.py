@@ -77,8 +77,11 @@ def handle_events():
 def update():
     boy.update()
 
+import game_framework
+
 def draw():
     clear_canvas()
     grass.draw()
     boy.draw()
-    update_canvas()
+    if game_framework.stack[-1].name == name:
+        update_canvas()
