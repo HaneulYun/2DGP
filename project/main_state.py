@@ -7,7 +7,7 @@ windowScale = game_framework.windowScale
 
 name = "MainState"
 
-boy = None
+dragon = None
 stage = None
 font = None
 
@@ -20,7 +20,7 @@ class Stage:
         self.image.clip_draw(5, 2768 - 223, 320, 208, 320 * game_framework.windowScale // 2, 208 * game_framework.windowScale // 2, 320 * game_framework.windowScale, 208 * game_framework.windowScale)
 
 
-class Boy:
+class Dragon:
     def __init__(self):
         self.x, self.y = 0, 90
         self.frame = 0
@@ -40,14 +40,14 @@ class Boy:
 
 
 def enter():
-    global boy, stage
-    boy = Boy()
+    global dragon, stage
+    dragon = Dragon()
     stage = Stage()
 
 
 def exit():
-    global boy, stage
-    del boy
+    global dragon, stage
+    del dragon
     del stage
 
 
@@ -71,12 +71,12 @@ def handle_events():
 
 
 def update():
-    boy.update()
+    dragon.update()
 
 
 def draw():
     clear_canvas()
     stage.draw()
-    boy.draw()
+    dragon.draw()
     if game_framework.stack[-1].name == name:
         update_canvas()
