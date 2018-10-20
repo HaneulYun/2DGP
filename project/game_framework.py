@@ -35,6 +35,7 @@ class TestGameState:
         print("State [%s] draw" % self.name)
 
 
+windowScale = 1
 running = None
 stack = None
 

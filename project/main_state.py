@@ -1,31 +1,23 @@
-import random
-import json
-import os
-
+import game_framework
+from pico2d import *
+import title_state
 import pause_state_advanced
 
-from pico2d import *
-
-import game_framework
-import title_state
-
-
+windowScale = game_framework.windowScale
 
 name = "MainState"
 
 boy = None
-grass = None
+stage = None
 font = None
 
 
-
-class Grass:
+class Stage:
     def __init__(self):
-        self.image = load_image('grass.png')
+        self.image = load_image('resources\sprites\Rounds\Misc Backgrounds.png')
 
     def draw(self):
-        self.image.draw(400, 30)
-
+        self.image.clip_draw(5, 2768 - 223, 320, 208, 320 * game_framework.windowScale // 2, 208 * game_framework.windowScale // 2, 320 * game_framework.windowScale, 208 * game_framework.windowScale)
 
 
 class Boy:
@@ -48,14 +40,16 @@ class Boy:
 
 
 def enter():
-    global boy, grass
+    global boy, stage
     boy = Boy()
-    grass = Grass()
+    stage = Stage()
+
 
 def exit():
-    global  boy, grass
-    del(boy)
-    del(grass)
+    global boy, stage
+    del boy
+    del stage
+
 
 def pause():
     pass
@@ -64,9 +58,10 @@ def pause():
 def resume():
     pass
 
+
 def handle_events():
     events = get_events()
-    for event in  events:
+    for event in events:
         if event.type == SDL_QUIT:
             game_framework.quit()
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
@@ -74,14 +69,14 @@ def handle_events():
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_p):
             game_framework.push_state(pause_state_advanced)
 
+
 def update():
     boy.update()
 
-import game_framework
 
 def draw():
     clear_canvas()
-    grass.draw()
+    stage.draw()
     boy.draw()
     if game_framework.stack[-1].name == name:
         update_canvas()
