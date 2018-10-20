@@ -29,6 +29,7 @@ MOTION_DIED = 0
 DIRECTION_LEFT = 0
 DIRECTION_RIGHT = 1
 
+
 class Dragon:
     def __init__(self):
         self.x, self.y = 100, 90
@@ -43,7 +44,7 @@ class Dragon:
         self.frameCycle = (self.frameCycle + 1) % 100
         if 0 == self.frameCycle:
             self.frame = (self.frame + 1) % 2
-        #self.x += self.dir
+        # self.x += self.dir
         if self.x >= 800:
             self.dir = -1
         elif self.x <= 0:
@@ -51,6 +52,18 @@ class Dragon:
 
     def draw(self):
         self.image.clip_draw(self.frame * 25, self.motionState * 25, 25, 25, self.x, self.y, 25 * game_framework.windowScale, 25 * game_framework.windowScale)
+
+    def move_left(self):
+        pass
+
+    def move_right(self):
+        pass
+
+    def jump(self):
+        pass
+
+    def attack(self):
+        pass
 
 
 def enter():
