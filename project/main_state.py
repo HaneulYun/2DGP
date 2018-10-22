@@ -18,7 +18,8 @@ font = None
 def enter():
     global dragon, stage
     dragon = game_dragon.Dragon()
-    stage = game_stage.Stage()
+    stage = game_stage.Stage('resources\sprites\Rounds\Round A-1.png')
+    stage.load('resources\data\Round A-1 data.txt')
 
 
 def exit():
@@ -36,6 +37,7 @@ def resume():
 
 
 def handle_events():
+    global stage
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
@@ -44,6 +46,8 @@ def handle_events():
             game_framework.change_state(title_state)
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_p):
             game_framework.push_state(pause_state_advanced)
+        elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_o):
+            stage.section = (stage.section - 1) % 5
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_LEFT):
             dragon.move_left()
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_RIGHT):
