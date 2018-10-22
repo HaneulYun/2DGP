@@ -1,5 +1,6 @@
 import game_framework
 from pico2d import *
+import main_state
 
 MOTION_TYPE = 0
 MOTION_FRAME = 1
@@ -24,9 +25,11 @@ class Dragon:
         self.jumpMotion = None
         self.attackMotion = False
 
+        self.jumping = 0.0
+
         self.frameCycle = 0
         self.frame = 0
-        self.speed = 0.02
+        self.speed = 0.04
         self.image = load_image('resources\sprites\Characters\Dragon.png')
 
     def update(self):
@@ -38,18 +41,25 @@ class Dragon:
                 self.frame = (self.frame + 1) % self.jumpMotion[MOTION_FRAME]
 
         if self.moveMotion == MOTION_MOVE:
-            if self.direction == DIRECTION_LEFT:
+            if self.direction == DIRECTION_LEFT and not main_state.stage.map[int(self.y)][int(self.x)]\
+                    and not main_state.stage.map[int(self.y)][int(self.x - 1.5)]:
                 self.x = self.x - self.speed
-            elif self.direction == DIRECTION_RIGHT:
+            elif self.direction == DIRECTION_RIGHT and not main_state.stage.map[int(self.y)][int(self.x)]\
+                    and not main_state.stage.map[int(self.y)][int(self.x + 1.5)]:
                 self.x = self.x + self.speed
         if self.jumpMotion == MOTION_JUMP:
             self.y = self.y + self.speed
-            if MOTION_JUMP[MOTION_FRAME] - 1 == self.frame and 50 - 1 == self.frameCycle:
+            self.jumping += self.speed
+            if self.jumping > 5.5:
                 self.drop()
         elif self.jumpMotion == MOTION_DROP:
             self.y = self.y - self.speed
-            if MOTION_DROP[MOTION_FRAME] - 1 == self.frame and 50 - 1 == self.frameCycle:
+            if main_state.stage.map[int(self.y)][int(self.x)]:
+                self.y = int(self.y+1)
                 self.jumpMotion = None
+                self.stop()
+        elif not main_state.stage.map[int(self.y - 1)][int(self.x)]:
+            self.drop()
 
     def draw(self):
         if self.direction == DIRECTION_LEFT:
@@ -63,7 +73,7 @@ class Dragon:
             motion_type = self.jumpMotion[MOTION_TYPE]
         self.image.clip_composite_draw(self.frame * 25, motion_type * 25, 25, 25, 0, flip,
                                        self.x * 8 * game_framework.windowScale,
-                                       (self.y * 8 + 12.5) * game_framework.windowScale,
+                                       (self.y * 8 + 14.5) * game_framework.windowScale,
                                        25 * game_framework.windowScale,
                                        25 * game_framework.windowScale)
 
@@ -77,6 +87,7 @@ class Dragon:
 
     def jump(self):
         if self.jumpMotion is None:
+            self.jumping = 0.0
             self.jumpMotion = MOTION_JUMP
             self.frame = 0
 
