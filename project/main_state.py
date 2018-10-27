@@ -1,10 +1,12 @@
-import game_framework
 from pico2d import *
+import game_framework
+import game_world
+
 import title_state
 import pause_state_advanced
 
-import game_stage
-import game_dragon
+from game_stage import *
+from game_dragon import *
 
 windowScale = game_framework.windowScale
 
@@ -17,15 +19,15 @@ font = None
 
 def enter():
     global dragon, stage
-    dragon = game_dragon.Dragon()
-    stage = game_stage.Stage('resources\sprites\Rounds\Round A-1.png')
+    dragon = Dragon()
+    stage = Stage('resources\sprites\Rounds\Round A-1.png')
     stage.load('resources\data\Round A-1 data.txt')
+    game_world.add_object(stage, 0)
+    game_world.add_object(dragon, 1)
 
 
 def exit():
-    global dragon, stage
-    del dragon
-    del stage
+    game_world.clear()
 
 
 def pause():
@@ -56,19 +58,20 @@ def handle_events():
             dragon.attack()
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_s):
             dragon.jump()
-        elif (event.type, event.key) == (SDL_KEYUP, SDLK_LEFT) and dragon.moveMotion == game_dragon.MOTION_MOVE and dragon.direction == game_dragon.DIRECTION_LEFT:
+        elif (event.type, event.key) == (SDL_KEYUP, SDLK_LEFT) and dragon.moveMotion == MOTION_MOVE and dragon.direction == DIRECTION_LEFT:
             dragon.stop()
-        elif (event.type, event.key) == (SDL_KEYUP, SDLK_RIGHT) and dragon.moveMotion == game_dragon.MOTION_MOVE and dragon.direction == game_dragon.DIRECTION_RIGHT:
+        elif (event.type, event.key) == (SDL_KEYUP, SDLK_RIGHT) and dragon.moveMotion == MOTION_MOVE and dragon.direction == DIRECTION_RIGHT:
             dragon.stop()
 
 
 def update():
-    dragon.update()
+    for game_object in game_world.all_objects():
+        game_object.update()
 
 
 def draw():
     clear_canvas()
-    stage.draw()
-    dragon.draw()
+    for game_object in game_world.all_objects():
+        game_object.draw()
     if game_framework.stack[-1].name == name:
         update_canvas()

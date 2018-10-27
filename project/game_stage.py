@@ -8,6 +8,9 @@ class Stage:
         self.section = 5
         self.map = None
 
+    def update(self):
+        pass
+
     def draw(self):
         self.image.clip_draw(320 * 3, 208 * 6, 352, 224,
                              320 * game_framework.windowScale // 2,
