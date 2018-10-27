@@ -10,9 +10,11 @@ def enter():
     global image
     image = load_image('title.png')
 
+
 def exit():
     global image
-    del(image)
+    del image
+
 
 def handle_events():
     events = get_events()
@@ -24,6 +26,7 @@ def handle_events():
                 game_framework.quit()
             elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_SPACE):
                 game_framework.change_state(main_state)
+
 
 def draw():
     clear_canvas()

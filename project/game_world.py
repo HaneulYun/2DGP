@@ -1,5 +1,9 @@
 objects = [[], []]
 
+def init_objects():
+    global objects
+    objects = [[], []]
+
 
 def add_object(o, layer):
     objects[layer].append(o)
@@ -16,6 +20,7 @@ def clear():
     for o in all_objects():
         del o
     objects.clear()
+    init_objects()
 
 
 def all_objects():
