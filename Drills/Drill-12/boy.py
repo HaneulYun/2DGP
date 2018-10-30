@@ -109,12 +109,12 @@ class SleepState:
     @staticmethod
     def enter(boy, event):
         boy.frame = 0
-        ghost = Ghost(boy.x, boy.y)
-        game_world.add_object(ghost, 1)
+        boy.ghost = Ghost(boy.x, boy.y)
+        game_world.add_object(boy.ghost, 1)
 
     @staticmethod
     def exit(boy, event):
-        pass
+        game_world.remove_object(boy.ghost)
 
     @staticmethod
     def do(boy):
@@ -151,6 +151,7 @@ class Boy:
         self.event_que = []
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
+        self.ghost = None
 
     def fire_ball(self):
         ball = Ball(self.x, self.y, self.dir*3)
