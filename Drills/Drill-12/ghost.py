@@ -1,15 +1,13 @@
 import game_framework
 from pico2d import *
 
-# Boy Run Speed
-# fill expressions correctly
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
-ROTATE_SPEED_KMPH = 20.0  # Km / Hour
-ROTATE_SPEED_MPM = (ROTATE_SPEED_KMPH * 1000.0 / 60.0)
-ROTATE_SPEED_MPS = (ROTATE_SPEED_MPM / 60.0)
-ROTATE_SPEED_PPS = (ROTATE_SPEED_MPS * PIXEL_PER_METER)
 
-# Boy Action Speed
+# Ghost Rotate Speed
+# fill expressions correctly
+ROTATE_SPEED_DPS = 720
+
+# Ghost Action Speed
 # fill expressions correctly
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
@@ -28,7 +26,7 @@ class GhostState:
 
     @staticmethod
     def do(ghost):
-        ghost.rotate += 1
+        ghost.rotate += 720 * game_framework.frame_time
         ghost.x = ghost.cx + ghost.dis * math.cos(ghost.rotate / 180.0 * 3.141592)
         ghost.y = ghost.cy + ghost.dis * math.sin(ghost.rotate / 180.0 * 3.141592)
         ghost.frame = (ghost.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
