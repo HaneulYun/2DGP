@@ -109,7 +109,7 @@ class SleepState:
     @staticmethod
     def enter(boy, event):
         boy.frame = 0
-        boy.ghost = Ghost(boy.x, boy.y)
+        boy.ghost = Ghost(boy.x, boy.y, boy.dir)
         game_world.add_object(boy.ghost, 1)
 
     @staticmethod

@@ -19,35 +19,41 @@ FRAMES_PER_ACTION = 8
 class GhostState:
 
     @staticmethod
-    def enter(boy, event):
+    def enter(ghost, event):
         pass
 
     @staticmethod
-    def exit(boy, event):
+    def exit(ghost, event):
         pass
 
     @staticmethod
-    def do(boy):
-        boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
+    def do(ghost):
+        ghost.rotate += 1
+        ghost.x = ghost.cx + ghost.dis * math.cos(ghost.rotate / 180.0 * 3.141592)
+        ghost.y = ghost.cy + ghost.dis * math.sin(ghost.rotate / 180.0 * 3.141592)
+        ghost.frame = (ghost.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
 
     @staticmethod
-    def draw(boy):
-        if boy.dir == 1:
-            boy.image.clip_draw(int(boy.frame) * 100, 300, 100, 100, boy.x, boy.y)
+    def draw(ghost):
+        if ghost.dir == 1:
+            ghost.image.clip_draw(int(ghost.frame) * 100, 300, 100, 100, ghost.x, ghost.y)
         else:
-            boy.image.clip_draw(int(boy.frame) * 100, 200, 100, 100, boy.x, boy.y)
+            ghost.image.clip_draw(int(ghost.frame) * 100, 200, 100, 100, ghost.x, ghost.y)
 
 
 class Ghost:
-    def __init__(self, x, y):
-        self.x, self.y = x, y
+    def __init__(self, x, y, dir):
+        self.cx, self.cy = x, y + PIXEL_PER_METER * 3
+        self.x, self.y = self.cx, self.cy
         # Boy is only once created, so instance image loading is fine
         self.image = load_image('animation_sheet.png')
-        self.dir = 1
+        self.dir = dir
         self.velocity = 0
         self.frame = 0
         self.cur_state = GhostState
         self.cur_state.enter(self, None)
+        self.rotate = 0
+        self.dis = PIXEL_PER_METER * 3
 
     def update(self):
         self.cur_state.do(self)
