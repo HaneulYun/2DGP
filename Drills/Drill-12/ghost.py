@@ -39,8 +39,8 @@ class GhostState:
 
 
 class Ghost:
-    def __init__(self):
-        self.x, self.y = 1600 // 2, 90
+    def __init__(self, x, y):
+        self.x, self.y = x, y
         # Boy is only once created, so instance image loading is fine
         self.image = load_image('animation_sheet.png')
         self.dir = 1
