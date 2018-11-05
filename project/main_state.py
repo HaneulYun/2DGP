@@ -39,7 +39,7 @@ def resume():
 
 
 def handle_events():
-    global stage
+    #global stage
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
@@ -50,18 +50,20 @@ def handle_events():
             game_framework.push_state(pause_state_advanced)
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_o):
             stage.section = (stage.section - 1) % 6
-        elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_LEFT):
-            dragon.move_left()
-        elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_RIGHT):
-            dragon.move_right()
-        elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_a):
-            dragon.attack()
-        elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_s):
-            dragon.jump()
-        elif (event.type, event.key) == (SDL_KEYUP, SDLK_LEFT) and dragon.moveMotion == MOTION_MOVE and dragon.direction == DIRECTION_LEFT:
-            dragon.stop()
-        elif (event.type, event.key) == (SDL_KEYUP, SDLK_RIGHT) and dragon.moveMotion == MOTION_MOVE and dragon.direction == DIRECTION_RIGHT:
-            dragon.stop()
+        else:
+            dragon.handle_event(event)
+    #    elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_LEFT):
+    #        dragon.move_left()
+    #    elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_RIGHT):
+    #        dragon.move_right()
+    #    elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_a):
+    #        dragon.attack()
+    #    elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_s):
+    #        dragon.jump()
+    #    elif (event.type, event.key) == (SDL_KEYUP, SDLK_LEFT) and dragon.moveMotion == MOTION_MOVE and dragon.direction == DIRECTION_LEFT:
+    #        dragon.stop()
+    #    elif (event.type, event.key) == (SDL_KEYUP, SDLK_RIGHT) and dragon.moveMotion == MOTION_MOVE and dragon.direction == DIRECTION_RIGHT:
+    #        dragon.stop()
 
 
 def update():

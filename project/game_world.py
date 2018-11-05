@@ -1,5 +1,6 @@
 objects = [[], []]
 
+
 def init_objects():
     global objects
     objects = [[], []]
