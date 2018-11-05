@@ -1,7 +1,10 @@
 import game_framework
 from pico2d import *
 
+from game_bubble import Bubble
+
 import main_state
+import game_world
 
 MOTION_TYPE = 0
 MOTION_FRAME = 1
@@ -67,9 +70,9 @@ class IdleState:
 
     @staticmethod
     def exit(dragon, event):
-        pass
-        #if event == SPACE:
-        #    dragon.fire_ball()
+        if event == ATTACK:
+            dragon.fire_bubble()
+            dragon.attack = 1
 
     @staticmethod
     def do(dragon):
@@ -140,9 +143,8 @@ class MoveState:
 
     @staticmethod
     def exit(dragon, event):
-        pass
-        #if event == SPACE:
-        #    dragon.fire_ball()
+        if event == ATTACK:
+            dragon.fire_bubble()
 
     @staticmethod
     def do(dragon):
@@ -226,7 +228,7 @@ next_state_table = {
     IdleState: {LEFT_DOWN: MoveState, LEFT_UP: MoveState, RIGHT_DOWN: MoveState, RIGHT_UP: MoveState,
                 SLEEP_TIMER: SleepState, JUMP: IdleState, ATTACK: IdleState },
     MoveState: {LEFT_DOWN: IdleState, LEFT_UP: IdleState, RIGHT_DOWN: IdleState, RIGHT_UP: IdleState,
-                JUMP: MoveState, ATTACK: IdleState},
+                JUMP: MoveState, ATTACK: MoveState},
     SleepState: {LEFT_DOWN: MoveState, LEFT_UP: MoveState, RIGHT_DOWN: MoveState, RIGHT_UP: MoveState,
                  JUMP: IdleState, ATTACK: IdleState},
 }
@@ -244,9 +246,14 @@ class Dragon:
         self.frame = 0
         self.event_que = []
         self.cur_state = IdleState
+        self.attack = 0
         self.rest_jump_volume = 0
         self.cur_frame_per_action = 0
         self.cur_state.enter(self, None)
+
+    def fire_bubble(self):
+        bubble = Bubble(self.x, self.y, self.dir*3)
+        game_world.add_object(bubble, 1)
 
     def add_event(self, event):
         self.event_que.insert(0, event)
