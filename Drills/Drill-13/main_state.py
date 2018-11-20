@@ -7,8 +7,8 @@ import game_framework
 import game_world
 
 from boy import Boy
-# fill here
-
+from background import FixedBackground as Background
+#from background import InfiniteBackground as Background
 
 name = "MainState"
 
@@ -25,7 +25,8 @@ def enter():
     background = Background()
     game_world.add_object(background, 0)
 
-    # fill here
+    background.set_center_object(boy)
+    boy.set_background(background)
 
 
 

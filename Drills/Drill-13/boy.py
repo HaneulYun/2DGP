@@ -70,12 +70,14 @@ class WalkingState:
         boy.x += boy.x_velocity * game_framework.frame_time
         boy.y += boy.y_velocity * game_framework.frame_time
 
-        # fill here
+        boy.x = clamp(0, boy.x, boy.bg.w)
+        boy.y = clamp(0 + boy.image.h / 8, boy.y, boy.bg.h - boy.image.h / 8)
 
 
     @staticmethod
     def draw(boy):
-        # fill here
+        cx, cy = boy.x - boy.bg.window_left, boy.y - boy.bg.window_bottom
+        # cx, cy = boy.canvas_width // 2, boy.canvas_height // 2
 
         if boy.x_velocity > 0:
             boy.image.clip_draw(int(boy.frame) * 100, 100, 100, 100, cx, cy)
@@ -96,6 +98,8 @@ class WalkingState:
                     boy.image.clip_draw(int(boy.frame) * 100, 300, 100, 100, cx, cy)
                 else:
                     boy.image.clip_draw(int(boy.frame) * 100, 200, 100, 100, cx, cy)
+        boy.font.draw(cx - 60, cy + 50, '(%5d, %5d)' % (boy.x, boy.y), (255, 255, 0))
+
 
 
 next_state_table = {
