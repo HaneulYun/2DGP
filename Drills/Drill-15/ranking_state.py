@@ -10,10 +10,14 @@ import game_world
 import world_build_state
 
 name = "RankingState"
-
+font = None
+time = None
 
 def enter():
-    pass
+    global font
+    if font is None:
+        font = load_font('ENCR10B.TTF', 20)
+
 
 def exit():
     game_world.clear()
@@ -33,10 +37,6 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_state(world_build_state)
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_s:
-            game_world.save()
-        else:
-            boy.handle_event(event)
 
 
 def update():
@@ -48,10 +48,6 @@ def draw():
     clear_canvas()
     for game_object in game_world.all_objects():
         game_object.draw()
+    font.draw(get_canvas_width() // 2 - 80, get_canvas_height() // 2 + 200, "[Total Ranking]")
     update_canvas()
-
-
-
-
-
 
