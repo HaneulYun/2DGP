@@ -24,6 +24,7 @@ def enter():
         ranking = json.load(f)
 
     ranking.append(time)
+    ranking.sort()
     ranking.reverse()
 
     while ranking.__len__() > 10:
@@ -62,6 +63,9 @@ def draw():
     clear_canvas()
     for game_object in game_world.all_objects():
         game_object.draw()
+
+    font.draw(get_canvas_width() // 2 - 80, get_canvas_height() // 2 + 250, "[My Score : %.2f]" % time)
+
     font.draw(get_canvas_width() // 2 - 80, get_canvas_height() // 2 + 200, "[Total Ranking]")
 
     for i in range(0, ranking.__len__()):
