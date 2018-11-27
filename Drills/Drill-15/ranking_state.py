@@ -13,10 +13,24 @@ name = "RankingState"
 font = None
 time = None
 
+ranking = []
+
 def enter():
-    global font
+    global font, ranking
     if font is None:
         font = load_font('ENCR10B.TTF', 20)
+
+    with open('ranking.txt', 'r') as f:
+        ranking = json.load(f)
+
+    ranking.append(time)
+    ranking.reverse()
+
+    while ranking.__len__() > 10:
+        ranking.remove(ranking[-1])
+
+    with open('ranking.txt', 'w') as f:
+        json.dump(ranking, f)
 
 
 def exit():
@@ -49,5 +63,9 @@ def draw():
     for game_object in game_world.all_objects():
         game_object.draw()
     font.draw(get_canvas_width() // 2 - 80, get_canvas_height() // 2 + 200, "[Total Ranking]")
+
+    for i in range(0, ranking.__len__()):
+        font.draw(get_canvas_width() // 2 - 80, get_canvas_height() // 2 + 100 - 20 * i,
+                  "#" + str(i+1) + ". " + '%.2f' % ranking[i])
     update_canvas()
 
